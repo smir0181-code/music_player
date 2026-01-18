@@ -1,0 +1,88 @@
+#: import ew kivy.uix.effectwidget
+
+<MusicScreen>:
+    der:progress
+    EffectWidget:
+        effects: [ew.VerticalBlurEffect(size=10),ew.HorizontalBlurEffect(size=10)]
+        FitImage:
+
+            source: 'test.jpg'
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding:['10dp', '30dp', '10dp', '50dp']
+        SongCover:
+            id: sc
+            size:(250,250)
+            size_hint: None, None
+            pos_hint: {'center_x': .5}
+            RotatingImage:
+                angle: sc.angle
+                source: 'test.jpg'
+                radius: [250, ]
+        Widget:
+            size_hint: None, None
+            height: '25dp'
+        Label:
+            text: 'Song Name'
+            bold: True
+            font_size: '25sp'
+            size_hint_y : None
+            height: self.texture_size[1]
+        Label:
+            text:'Artist Name'
+            font_size: '25sp'
+            size_hint_y: None
+            height: self.texture_size[1]
+        MDBoxLayout:
+            orientation: 'vertical'
+            Slider:
+
+                id: progress
+                color: [.7, 0.5, 1, 0]
+                min:0
+                max:1
+                value:.001
+                #value:app.ass
+                background_width: '8dp'
+                #cursor_image:''
+                cursor_size:('0dp','0dp')
+                value_track_color:[1, 0, 0, 1]
+                value_track: True
+            MDBoxLayout:
+                MyIcon:
+                    icon: 'restart'
+                MyIcon:
+                    icon: 'skip-previous-outline'
+                MyIcon:
+                    icon: 'skip-backward-outline'
+                MyIcon:
+                    icon: 'play-outline'
+                    on_press:
+                        #root.derun()
+                        sc.play(progress)
+
+                MyIcon:
+                    icon: 'skip-forward'
+                MyIcon:
+                    icon: 'skip-next-outline'
+                MyIcon:
+                    icon: 'format-list-bulleted'
+<MyIcon@MDIconButton>:
+    color:[.7, 0, 0.3, 1]
+    size_hint: None, None
+    user_font_size: '20sp'
+    theme_text_color: 'Custom'
+    size: ('20dp','20dp')
+    text_color:[1, 1, 1, 1]
+
+
+
+<RotatingImage@FitImage>:
+    angle: 0
+    canvas.before:
+        PushMatrix
+        Rotate:
+            angle: root.angle
+            origin: self.center
+    canvas.after:
+        PopMatrix
